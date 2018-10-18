@@ -1,5 +1,7 @@
 # Flutter Permission handler Plugin
 
+This is a fork.
+
 [![pub package](https://img.shields.io/pub/v/permission_handler.svg)](https://pub.dartlang.org/packages/permission_handler)
 
 A permissions plugin for Flutter. This plugin provides a cross-platform (iOS, Android) API to request and check permissions.
