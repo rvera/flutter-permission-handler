@@ -8,19 +8,7 @@
 import Foundation
 
 enum PermissionGroup : String, Codable {
-    case calendar = "calendar"
-    case camera = "camera"
-    case contacts = "contacts"
     case location = "location"
     case locationAlways = "locationAlways"
     case locationWhenInUse = "locationWhenInUse"
-    case mediaLibrary = "mediaLibrary"
-    case microphone = "microphone"
-    case phone = "phone"
-    case photos = "photos"
-    case reminders = "reminders"
-    case sensors = "sensors"
-    case sms = "sms"
-    case speech = "speech"
-    case storage = "storage"
 }

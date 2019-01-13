@@ -66,28 +66,11 @@ class PermissionManager: NSObject {
     
     private static func createPermissionStrategy(permission: PermissionGroup) -> PermissionStrategy {
         switch permission {
-        case PermissionGroup.calendar:
-            return EventPermissionStrategy()
-        case PermissionGroup.camera:
-            return AudioVideoPermissionStrategy()
-        case PermissionGroup.contacts:
-            return ContactPermissionStrategy()
+
         case PermissionGroup.location,
              PermissionGroup.locationAlways,
              PermissionGroup.locationWhenInUse:
             return LocationPermissionStrategy()
-        case PermissionGroup.mediaLibrary:
-            return MediaLibraryPermissionStrategy()
-        case PermissionGroup.microphone:
-            return AudioVideoPermissionStrategy()
-        case PermissionGroup.photos:
-            return PhotoPermissionStrategy()
-        case PermissionGroup.reminders:
-            return EventPermissionStrategy()
-        case PermissionGroup.sensors:
-            return SensorPermissionStrategy()
-        case PermissionGroup.speech:
-            return SpeechPermissionStrategy()
         default:
             return UnknownPermissionStrategy()
         }
