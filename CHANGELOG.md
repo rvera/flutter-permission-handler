@@ -1,3 +1,5 @@
+## 2.2.0
+
 ## 2.1.2
 
 * Make sure the Permission Handler compiles with latest iOS SDK
