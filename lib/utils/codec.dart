@@ -1,16 +1,23 @@
 part of permission_handler;
 
 class Codec {
-  static PermissionStatus decodePermissionStatus(dynamic value) {
-    final dynamic permission = json.decode(value.toString());
+  static PermissionStatus decodePermissionStatus(String value) {
+    final String permission = json.decode(value);
 
     return PermissionStatus.values.firstWhere(
         (PermissionStatus e) => e.toString().split('.').last == permission);
   }
 
+  static ServiceStatus decodeServiceStatus(String value) {
+    final String status = json.decode(value);
+
+    return ServiceStatus.values.firstWhere(
+        (ServiceStatus s) => s.toString().split('.').last == status);
+  }
+
   static Map<PermissionGroup, PermissionStatus> decodePermissionRequestResult(
-      dynamic value) {
-    final Map<String, dynamic> jsonObject = json.decode(value.toString());
+      String value) {
+    final Map<String, dynamic> jsonObject = json.decode(value);
 
     final Map<PermissionGroup, PermissionStatus> permissionResults =
         <PermissionGroup, PermissionStatus>{};

@@ -18,15 +18,22 @@ class LocationPermissionStrategy : NSObject, PermissionStrategy, CLLocationManag
     }
     
     private static func getPermissionStatus(permission: PermissionGroup) -> PermissionStatus {
-        if !CLLocationManager.locationServicesEnabled() {
+        let authorizationStatus: CLAuthorizationStatus = CLLocationManager.authorizationStatus()
+        let permissionStatus: PermissionStatus = LocationPermissionStrategy.determinePermissionStatus(
+            permission: permission,
+            authorizationStatus: authorizationStatus)
+        
+        if (permissionStatus == PermissionStatus.granted || permissionStatus == PermissionStatus.denied) && !CLLocationManager.locationServicesEnabled() {
             return PermissionStatus.disabled
         }
         
-        let status: CLAuthorizationStatus = CLLocationManager.authorizationStatus()
-        
-        return LocationPermissionStrategy.determinePermissionStatus(
-            permission: permission,
-            authorizationStatus: status)
+        return permissionStatus
+    }
+    
+    func checkServiceStatus(permission: PermissionGroup) -> ServiceStatus {
+        return CLLocationManager.locationServicesEnabled()
+            ? ServiceStatus.enabled
+            : ServiceStatus.disabled
     }
     
     func requestPermission(permission: PermissionGroup, completionHandler: @escaping PermissionStatusHandler) {

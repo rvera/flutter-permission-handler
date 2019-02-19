@@ -1,5 +1,15 @@
 ## 2.2.0
 
+* Added new method `checkServiceStatus` to allow users to check if the location services (on Android and iOS) and motion services (iOS only) are enabled;
+* When checking permission status (using `checkPermissionStatus`) return `PermissionStatus.disabled` when permissions are granted or denied and the location services (on Android and iOS) or the motion services (iOS only) are disabled.
+
+## 2.1.3
+
+* Fixed bug on iOS where result of the `openAppSettings` call always returned `false`;
+* Upgrade Android plugin to support AndroidX and latest Gradle and Kotlin versions;
+* Added Swift version number to the Podfile of the plugin;
+* Updated flutter static analyzes to conform to latest recommendations.
+
 ## 2.1.2
 
 * Make sure the Permission Handler compiles with latest iOS SDK

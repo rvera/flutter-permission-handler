@@ -22,6 +22,13 @@ class PermissionManager: NSObject {
         result(Codec.encodePermissionStatus(permissionStatus: permissionStatus))
     }
     
+    static func checkServiceStatus(permission: PermissionGroup, result: @escaping FlutterResult) {
+        let permissionStrategy = PermissionManager.createPermissionStrategy(permission: permission)
+        let serviceStatus = permissionStrategy.checkServiceStatus(permission: permission)
+        
+        result(Codec.encodeServiceStatus(serviceStatus: serviceStatus))
+    }
+    
     func requestPermissions(permissions: [PermissionGroup], completion: @escaping PermissionRequestCompletion) {
         var requestQueue = Set(permissions.map { $0 })
         var permissionStatusResult: [PermissionGroup: PermissionStatus] = [:]
@@ -49,12 +56,14 @@ class PermissionManager: NSObject {
             if #available(iOS 10, *) {
                 guard let url = URL(string: UIApplicationOpenSettingsURLString),
                     UIApplication.shared.canOpenURL(url) else {
+                        result(false)
                         return
                 }
                 
                 let optionsKeyDictionary = [UIApplicationOpenURLOptionUniversalLinksOnly: NSNumber(value: true)]
                 
-                UIApplication.shared.open(url, options: optionsKeyDictionary, completionHandler: nil)
+                UIApplication.shared.open(url, options: optionsKeyDictionary, completionHandler: { (success) in result(success) });
+                return
             } else {
                 let success = UIApplication.shared.openURL(URL.init(string: UIApplicationOpenSettingsURLString)!)
                 result(success)

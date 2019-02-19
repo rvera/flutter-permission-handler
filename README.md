@@ -24,7 +24,7 @@ To use this plugin, add `permission_handler` as a [dependency in your pubspec.ya
 
 ```yaml
 dependencies:
-  permission_handler: '^2.1.2'
+  permission_handler: '^2.2.0'
 ```
 
 > **NOTE:** There's a known issue with integrating plugins that use Swift into a Flutter project created with the Objective-C template. See issue [Flutter#16049](https://github.com/flutter/flutter/issues/16049) for help on integration.
@@ -33,7 +33,7 @@ dependencies:
 
 ### Requesting permission
 
-``` dart
+```dart
 import 'package:permission_handler/permission_handler.dart';
 
 Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions([PermissionGroup.contacts]);
@@ -41,15 +41,25 @@ Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().r
 
 ### Checking permission
 
-``` dart
+```dart
 import 'package:permission_handler/permission_handler.dart';
 
 PermissionStatus permission = await PermissionHandler().checkPermissionStatus(PermissionGroup.contacts);
 ```
 
+### Checking service status
+
+```dart
+import 'package:permission_handler/permission_handler.dart';
+
+ServiceStatus serviceStatus = await PermissionHandler().checkServiceStatus(PermissionGroup.location);
+```
+
+Checking the service status only makes sense for the `PermissionGroup.location` on Android and the `PermissionGroup.location`, `PermissionGroup.locationWhenInUser`, `PermissionGroup.locationAlways` or `PermissionGroup.sensors` on iOS. All other permission groups are not backed by a separate service and will always return `ServiceStatus.notApplicable`.
+
 ### Open app settings
 
-``` dart
+```dart
 import 'package:permission_handler/permission_handler.dart';
 
 bool isOpened = await PermissionHandler().openAppSettings();
@@ -57,7 +67,7 @@ bool isOpened = await PermissionHandler().openAppSettings();
 
 ### Show a rationale for requesting permission (Android only)
 
-``` dart
+```dart
 import 'package:permission_handler/permission_handler.dart';
 
 bool isShown = await PermissionHandler().shouldShowRequestPermissionRationale(PermissionGroup.contacts);
@@ -69,7 +79,7 @@ This will always return `false` on iOS.
 
 Defines the permission groups for which permissions can be checked or requested.
 
-``` dart
+```dart
 enum PermissionGroup {
   /// The unknown permission only used for return type, never requested
   unknown,
@@ -140,12 +150,12 @@ enum PermissionGroup {
 
 Defines the state of a permission group
 
-``` dart
+```dart
 enum PermissionStatus {
   /// Permission to access the requested feature is denied by the user.
   denied,
 
-  /// The feature is disabled (or not available) on the device.
+  /// Permissions to access the feature is granted by the user but the feature is disabled.
   disabled,
 
   /// Permission to access the requested feature is granted by the user.
@@ -156,6 +166,27 @@ enum PermissionStatus {
 
   /// Permission is in an unknown state
   unknown
+}
+```
+
+### Overview of possible service statuses
+
+Defines the state of the backing service for the supplied permission group
+
+```dart
+/// Defines the state of a service related to the permission group
+enum ServiceStatus {
+  /// The unknown service status indicates the state of the service could not be determined.
+  unknown,
+
+  /// There is no service for the supplied permission group.
+  notApplicable,
+
+  /// The service for the supplied permission group is disabled.
+  disabled,
+
+  /// The service for the supplied permission group is enabled.
+  enabled
 }
 ```
 
